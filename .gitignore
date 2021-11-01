@@ -1,0 +1,2 @@
+# dont commit env setup script with keys in it 
+hp_env_setup.py
