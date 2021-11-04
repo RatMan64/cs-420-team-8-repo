@@ -1,10 +1,17 @@
 package com.team8.backend;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.security.KeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -24,6 +31,17 @@ public class Endpoint {
     ) {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
+
+    @GetMapping("/orders")
+    public Map<String, Object> getOrders() throws KeyException, NoSuchAlgorithmException, IOException {
+        var sf = new SiteFlow();
+        var response = sf.GetAllOrders();
+        System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
+        HttpEntity entity = response.getEntity();
+        String body = EntityUtils.toString(entity, "UTF-8");
+        return new JSONObject(body).toMap();
+    }
+
 
     @GetMapping("/api/foos")
     @ResponseBody
