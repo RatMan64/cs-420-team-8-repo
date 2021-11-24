@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
 import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +31,21 @@ public class Endpoint {
             @RequestParam(value = "name2", defaultValue = "World2") String name
     ) {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
+    }
+
+
+    /**
+     *skus api call will ask siteflow for all the skus aviabliable
+     */
+    @GetMapping("/skus")
+    public Map<String, Object> getSkus() throws KeyException, NoSuchAlgorithmException, IOException{
+        var sf = new SiteFlow();
+        var response = sf.GetSkus();
+        System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
+        HttpEntity entity = response.getEntity();
+        String body = EntityUtils.toString(entity, "UTF-8");
+        return new JSONObject(body).toMap();
+
     }
 
     @GetMapping("/orders")
