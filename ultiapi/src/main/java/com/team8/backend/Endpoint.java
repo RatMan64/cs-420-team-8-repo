@@ -33,6 +33,16 @@ public class Endpoint {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
+    @GetMapping("/products")
+    public Map<String, Object> getProducts() throws KeyException, NoSuchAlgorithmException, IOException {
+        var sf = new SiteFlow();
+        var response = sf.GetProducts();
+        System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
+      HttpEntity entity = response.getEntity();
+      String body = EntityUtils.toString(entity, "UTF-8");
+      return new JSONObject(body).toMap();
+    }
+
 
     /**
      *skus api call will ask siteflow for all the skus aviabliable
