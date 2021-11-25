@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
 import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
@@ -43,8 +42,8 @@ public class Endpoint {
         return new JSONObject(body).toMap();
     }
 
-    @GetMapping("/productID/Components")
-    public Map<String, Object> getComponents( @RequestParam String productID) throws KeyException, NoSuchAlgorithmException, IOException{
+    @GetMapping("/components")
+    public Map<String, Object> getComponents( @RequestParam String productID) throws KeyException, NoSuchAlgorithmException, IOException {
       var sf = new SiteFlow();
       var response = sf.GetComponents(productID);
       System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
