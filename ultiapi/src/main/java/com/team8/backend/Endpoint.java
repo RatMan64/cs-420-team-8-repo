@@ -38,11 +38,20 @@ public class Endpoint {
         var sf = new SiteFlow();
         var response = sf.GetProducts();
         System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
+        HttpEntity entity = response.getEntity();
+        String body = EntityUtils.toString(entity, "UTF-8");
+        return new JSONObject(body).toMap();
+    }
+
+    @GetMapping("/productID/Components")
+    public Map<String, Object> getComponents( @RequestParam String productID) throws KeyException, NoSuchAlgorithmException, IOException{
+      var sf = new SiteFlow();
+      var response = sf.GetComponents(productID);
+      System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
       HttpEntity entity = response.getEntity();
       String body = EntityUtils.toString(entity, "UTF-8");
       return new JSONObject(body).toMap();
     }
-
 
     /**
      *skus api call will ask siteflow for all the skus aviabliable

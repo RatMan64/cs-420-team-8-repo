@@ -126,6 +126,26 @@ public class SiteFlow {
 		return client.execute(request);
 	}
 
+  /**
+   * Gets a list of components in Site Flow base on a given productID
+   *
+   * @param id
+   * @return
+   * @throws InvalidKeyException
+   * @throws NoSuchAlgorithmException
+   * @throws IOException
+   */
+  public HttpResponse GetComponents(String id) throws InvalidKeyException, NoSuchAlgorithmException, IOException{
+    String path = "/api/product/" + id;
+    CloseableHttpClient client = HttpClients.createDefault();
+    HttpGet request = new HttpGet(baseUrl + path);
+
+    addHeaders(request, "GET", path);
+
+    System.out.println("Getting Components based on Product ID");
+    return client.execute(request);
+  }
+
 	/**
 	 * Gets a list of skus in Site Flow.
 	 *
