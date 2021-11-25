@@ -3,15 +3,14 @@ package com.team8.backend;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -63,7 +62,6 @@ public class Endpoint {
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity, "UTF-8");
         return new JSONObject(body).toMap();
-
     }
 
     @GetMapping("/orders")
@@ -76,6 +74,15 @@ public class Endpoint {
         return new JSONObject(body).toMap();
     }
 
+    @PostMapping("/order")
+    public ResponseEntity<Integer> submitOrder(@RequestParam String skuID, @RequestParam String productID){
+
+        System.out.println(skuID);
+        System.out.println(productID);
+        //todo build order entity
+
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/api/foos")
     @ResponseBody
