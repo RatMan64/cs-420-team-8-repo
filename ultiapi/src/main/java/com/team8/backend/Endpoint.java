@@ -63,8 +63,9 @@ public class Endpoint {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<Integer> submitOrder(@RequestParam String skuID, @RequestParam String productID){
+    public ResponseEntity<Integer> submitOrder(@RequestParam String name, @RequestParam String skuID, @RequestParam String productID){
 
+        System.out.println("name = " + name);
         System.out.println("skuID = " + skuID);
         System.out.println("productID = " +productID);
         //todo build order entity
