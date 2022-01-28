@@ -23,21 +23,18 @@ public class SiteFlow {
 	//Access Credentials
 //	private static String baseUrl = "https://printos.api.hp.com/siteflow"; //use for account on production server
 //	private static String baseUrl = "https://stage.printos.api.hp.com/siteflow"; //use for account on staging server
-	private static String baseUrl = "https://pro-api.oneflowcloud.com";
+	private static final String baseUrl = "https://pro-api.oneflowcloud.com";
 	private static HmacAuth auth;
 
-    /**
 
-    @throws KeyException
-     */
-	public SiteFlow() throws KeyException {
+	public SiteFlow() {
 
         // (kevin) defined enviorment variables as the way to get the siteflow token and secret
         // also set hmacsha1 as the default hash
         // also we should be using java 11 so var should work
         var ENV = System.getenv();
         if (!ENV.containsKey("SITEFLOW_TOKEN") || !ENV.containsKey("SITEFLOW_SECRET")) {
-            throw new KeyException("missing siteflow token or secret");
+            throw new RuntimeException(new KeyException("missing siteflow token or secret"));
         }
         String key = ENV.get("SITEFLOW_TOKEN");
         String secret = ENV.get("SITEFLOW_SECRET");

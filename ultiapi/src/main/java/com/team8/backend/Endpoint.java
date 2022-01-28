@@ -5,6 +5,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 
 import java.io.IOException;
 import java.security.KeyException;
@@ -13,16 +14,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
+import java.util.UUID;
+
 @RestController
 public class Endpoint {
 
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    private static final DynamoDbTable<Order> DB = DataBase.setup();
+    private static final SiteFlow SF = new SiteFlow();
+
 
     @GetMapping("/products")
     public Map<String, Object> getProducts() throws KeyException, NoSuchAlgorithmException, IOException {
-        var sf = new SiteFlow();
-        var response = sf.GetProducts();
+        var response = SF.GetProducts();
         System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity, "UTF-8");
@@ -31,8 +34,7 @@ public class Endpoint {
 
     @GetMapping("/product")
     public Map<String, Object> getComponents( @RequestParam String productID) throws KeyException, NoSuchAlgorithmException, IOException {
-      var sf = new SiteFlow();
-      var response = sf.GetComponents(productID);
+      var response = SF.GetComponents(productID);
       System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
       HttpEntity entity = response.getEntity();
       String body = EntityUtils.toString(entity, "UTF-8");
@@ -44,8 +46,7 @@ public class Endpoint {
      */
     @GetMapping("/skus")
     public Map<String, Object> getSkus() throws KeyException, NoSuchAlgorithmException, IOException{
-        var sf = new SiteFlow();
-        var response = sf.GetSkus();
+        var response = SF.GetSkus();
         System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity, "UTF-8");
@@ -54,8 +55,7 @@ public class Endpoint {
 
     @GetMapping("/orders")
     public Map<String, Object> getOrders() throws KeyException, NoSuchAlgorithmException, IOException {
-        var sf = new SiteFlow();
-        var response = sf.GetAllOrders();
+        var response = SF.GetAllOrders();
         System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
         HttpEntity entity = response.getEntity();
         String body = EntityUtils.toString(entity, "UTF-8");
