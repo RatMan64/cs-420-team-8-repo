@@ -73,4 +73,14 @@ public class Endpoint {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/t")
+    public void test(@RequestBody Order o){
+        System.out.println(o.getUser());
+        System.out.println(o.getOrder());
+        System.out.println(o.getId());
+
+        DB.putItem(o);
+
+    }
+
 }

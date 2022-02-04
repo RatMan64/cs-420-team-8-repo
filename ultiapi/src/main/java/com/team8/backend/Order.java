@@ -1,5 +1,6 @@
 package com.team8.backend;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
@@ -10,6 +11,7 @@ public class Order {
     private String user;
     private final String id = UUID.randomUUID().toString();
     private String order;
+    private Shipping shipping;
 
     // cant use default constructor with dynamo sdk
 
@@ -32,5 +34,37 @@ public class Order {
     }
     public void setOrder(String order) {
         this.order = order;
+    }
+
+    public Shipping getShipping() {
+        return shipping;
+    }
+
+    public void setShipping(Shipping shipping) {
+        this.shipping = shipping;
+    }
+
+    @DynamoDbBean
+    public static class Shipping{
+        private String dest;
+        private String name;
+
+        public String getDest() {
+            return dest;
+        }
+
+        public void setDest(String dest) {
+            this.dest = dest;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+
     }
 }
