@@ -8,7 +8,7 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 public class DataBase {
-    public static DynamoDbTable<Order> setup(){
+    public static DynamoDbTable<DBItem> setup(){
 
         var ddb = DynamoDbClient.builder()
                 .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
@@ -22,7 +22,7 @@ public class DataBase {
         if(eddb == null)
             throw new RuntimeException("aws dynamo db connection was not created");
 
-        return eddb.table("hp-siteflow-orders", TableSchema.fromBean(Order.class));
+        return eddb.table("hp-siteflow-orders", TableSchema.fromBean(DBItem.class));
 
     }
 

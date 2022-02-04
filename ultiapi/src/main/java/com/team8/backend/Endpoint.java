@@ -1,5 +1,6 @@
 package com.team8.backend;
 
+import com.team8.backend.schema.Order;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
@@ -11,15 +12,11 @@ import java.io.IOException;
 import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicLong;
-
-import java.util.UUID;
 
 @RestController
 public class Endpoint {
 
-    private static final DynamoDbTable<Order> DB = DataBase.setup();
+    private static final DynamoDbTable<DBItem> DB = DataBase.setup();
     private static final SiteFlow SF = new SiteFlow();
 
 
@@ -75,11 +72,10 @@ public class Endpoint {
 
     @PostMapping("/t")
     public void test(@RequestBody Order o){
-        System.out.println(o.getUser());
-        System.out.println(o.getOrder());
-        System.out.println(o.getId());
+        var item = new DBItem();
 
-        DB.putItem(o);
+
+        DB.putItem(item);
 
     }
 
