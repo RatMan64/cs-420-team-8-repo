@@ -1,0 +1,41 @@
+###
+POST http://localhost:8080/order
+Content-Type: application/json
+
+{
+  "destination": {
+    "name": "DESTINATION_NAME"
+  },
+  "orderData": {
+    "customerName": "CUSTOMER_NAME",
+    "sourceOrderId": "ORDER_ID",
+    "items": [
+      {
+        "sku": "SKU_CODE",
+        "sourceItemId": "Orthotic-Left-ORDER_ID",
+        "components": [
+          {
+            "fetch": true,
+            "code": "COMPONENT_CODE",
+            "path": "LEFT_MODEL_URL"
+          }
+        ]
+      }
+    ],
+    "shipments": [
+      {
+        "shipTo": {
+          "name": "SHIP_TO_NAME",
+          "companyName": "COMPANY_NAME",
+          "address1": "SHIP_TO_ADDRESS",
+          "town": "SHIP_TO_TOWN",
+          "postcode": "SHIP_TO_POSTAL_CODE",
+          "isoCountry": "SHIP_TO_COUNTRY"
+        },
+        "carrier": {
+          "alias": "shipping"
+        }
+      }
+    ]
+  }
+}
