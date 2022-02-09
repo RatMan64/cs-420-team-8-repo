@@ -40,7 +40,7 @@ public class Endpoint {
     }
 
     /**
-     *skus api call will ask siteflow for all the skus aviabliable
+     *skus api call will ask site-flow for all the skus available
      */
     @GetMapping("/skus")
     public Map<String, Object> getSkus() throws KeyException, NoSuchAlgorithmException, IOException{
@@ -62,12 +62,22 @@ public class Endpoint {
 
     @PostMapping("/order")
     public ResponseEntity<Integer> submitOrder(@RequestBody Order order) throws NoSuchAlgorithmException, IOException, InvalidKeyException {
-        //todo build order entity
-        var item = new DBItem();
-        item.setOrder(order);
-        var response = SF.SubmitOrder(createOrder(order));
-        DB.putItem(item);
-        return (ResponseEntity<Integer>) response;
+        var o = new JSONObject(order);
+
+        // set necessary values (postback, destination, etc)
+        o.getJSONObject("destination").put("name", "wsu-test-team-8");
+        var response = SF.SubmitOrder(o.toString()).getStatusLine();
+
+        if (response.getStatusCode() != 200){
+            System.out.println(response);
+        } else { // only submit on ok status?
+            var item = new DBItem();
+            item.setOrder(order);
+            DB.putItem(item);
+        }
+
+        // pass status from siteflow to front end
+        return ResponseEntity.status(response.getStatusCode()).build();
     }
 
     @PostMapping("/t")
@@ -77,61 +87,6 @@ public class Endpoint {
 
         DB.putItem(item);
 
-    }
-    /**
-    * Creates an order for submission or validation
-    *
-    * @return JSON string of an order
-    */
-    private String createOrder(Order order){
-
-      //set needed ones
-      String componentCode = order.getOrderData().getItems().get(0).getComponents().get(0).getCode();
-      String destination = "wsu-test-team-8";
-      String itemID = order.getOrderData().getItems().get(0).getSourceItemId();
-      String orderId = order.getOrderData().getSourceOrderId();
-      String sku = order.getOrderData().getItems().get(0).getSku();
-
-      JSONObject shipTo = new JSONObject();
-      shipTo.put("name", order.getOrderData().getShipments().get(0).getShipTo().getName());
-      shipTo.put("companyName", order.getOrderData().getShipments().get(0).getShipTo().getCompanyName());
-      shipTo.put("address1", order.getOrderData().getShipments().get(0).getShipTo().getAddress1());
-      shipTo.put("town", order.getOrderData().getShipments().get(0).getShipTo().getTown());
-      shipTo.put("postcode", order.getOrderData().getShipments().get(0).getShipTo().getPostcode());
-      shipTo.put("isoCountry", order.getOrderData().getShipments().get(0).getShipTo().getIsoCountry());
-
-      //check on this one
-      JSONObject carrier = new JSONObject();
-      carrier.put("alias", "shipping");
-
-      JSONObject item = new JSONObject();
-      item.put("sourceItemId", itemID);
-      item.put("sku", sku);
-
-      JSONObject components = new JSONObject();
-      components.put("code", componentCode);
-      components.put("path", order.getOrderData().getItems().get(0).getComponents().get(0).getPath());
-      components.put("fetch", "true");
-
-      item.append("components", components);
-
-      JSONObject shipment = new JSONObject();
-      shipment.put("shipTo", shipTo);
-      shipment.put("carrier", carrier);
-
-      JSONObject dest = new JSONObject();
-      dest.put("name", destination);
-
-      JSONObject orderData = new JSONObject();
-      orderData.put("sourceOrderId", orderId);
-      orderData.append("items", item);
-      orderData.append("shipments", shipment);
-
-      JSONObject postOrder = new JSONObject();
-      postOrder.put("destination", dest);
-      postOrder.put("orderData", orderData);
-
-      return postOrder.toString();
     }
 
 }
