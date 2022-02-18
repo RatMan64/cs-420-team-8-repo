@@ -1,11 +1,10 @@
 
 package com.team8.backend.schema;
 
-import com.team8.backend.schema.Shipment;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
-import java.util.List;
 import javax.annotation.Generated;
+import java.util.List;
 
 @Generated("jsonschema2pojo")
 @DynamoDbBean
@@ -13,6 +12,7 @@ public class OrderData {
 
     private String customerName;
     private String sourceOrderId;
+    private String status;
     private List<Item> items = null;
     private List<Shipment> shipments = null;
 
@@ -24,6 +24,13 @@ public class OrderData {
         this.customerName = customerName;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     public String getSourceOrderId() {
         return sourceOrderId;
     }

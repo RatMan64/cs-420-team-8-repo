@@ -3,6 +3,7 @@ package com.team8.backend;
 import com.team8.backend.schema.Order;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 public class Endpoint {
@@ -60,13 +62,25 @@ public class Endpoint {
         return new JSONObject(body).toMap();
     }
 
+
     @PostMapping("/order")
     public ResponseEntity<Integer> submitOrder(@RequestBody Order order) throws NoSuchAlgorithmException, IOException, InvalidKeyException {
         var o = new JSONObject(order);
 
         // set necessary values (postback, destination, etc)
         o.getJSONObject("destination").put("name", "wsu-test-team-8");
+        o.getJSONObject("orderData").put("sourceOrderId", UUID.randomUUID().toString());
+        o.getJSONObject("orderData").put("status", "pending");
+
+        //todo: remove when order submission is properly implemented
+        o.getJSONObject("orderData").put("items", new JSONArray());
+
+        //debugging
+//        System.out.println(SF.ValidateOrder(o.toString(1)));
+
+        System.out.println("called with: " + o.toString());
         var response = SF.SubmitOrder(o.toString()).getStatusLine();
+        System.out.println(response.toString());
 
         if (response.getStatusCode() != 200){
             System.out.println(response);
