@@ -3,7 +3,6 @@ package com.team8.backend;
 import com.team8.backend.schema.Order;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,8 +71,6 @@ public class Endpoint {
         o.getJSONObject("orderData").put("sourceOrderId", UUID.randomUUID().toString());
         o.getJSONObject("orderData").put("status", "pending");
 
-        //todo: remove when order submission is properly implemented
-        o.getJSONObject("orderData").put("items", new JSONArray());
 
         //debugging
 //        System.out.println(SF.ValidateOrder(o.toString(1)));
