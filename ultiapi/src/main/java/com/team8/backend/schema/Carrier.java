@@ -8,6 +8,8 @@ import javax.annotation.Generated;
 @Generated("jsonschema2pojo")
 @DynamoDbBean
 public class Carrier {
+    private String code;
+    private String service;
 
     private String alias;
 
@@ -19,4 +21,20 @@ public class Carrier {
         this.alias = alias;
     }
 
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
+    }
 }

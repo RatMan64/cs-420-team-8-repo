@@ -4,6 +4,61 @@ Content-Type: application/json
 
 {
   "destination": {
+    "name": "wsu-test-team-8",
+    "id": "61549f48c77db4001306b3d6"
+  },
+  "source": {
+    "name": "wsu-test-team-8",
+    "id": "61549f48c77db4001306b3d6"
+  },
+  "orderData": {
+    "status": "pending",
+    "sourceOrderId": "20220210160244",
+    "email": "donald_abel@hp.com",
+    "slaTimestamp": "2022-02-10T21:26:52.445Z",
+    "date": "2022-02-10T21:26:52.445Z",
+    "customerName": "wsu-test-team-8",
+    "instructions": "",
+    "colour": "black",
+    "items": [],
+    "stockItems": [],
+    "shipments": [
+      {
+        "items": [],
+        "shipmentIndex": 0,
+        "canShipEarly": true,
+        "shipByDate": "2022-02-12T21:26:52.440Z",
+        "shipTo": {
+          "name": "Customer Name",
+          "companyName": "Company Name",
+          "address1": "Address Line 1",
+          "address2": "Address Line ",
+          "address3": "Address Line ",
+          "town": "Town",
+          "postcode": "Postcode",
+          "state": "State",
+          "isoCountry": "GB",
+          "phone": "Phone",
+          "email": "email@example.com"
+        },
+        "carrier": {
+          "code": "customer",
+          "service": "shipping",
+          "serviceId": "61549f485a2727c6e29a138c",
+          "alias": "shipping"
+        }
+      }
+    ],
+    "tags": []
+  }
+}
+
+###
+POST http://localhost:8080/order
+Content-Type: application/json
+
+{
+  "destination": {
     "name": "DESTINATION_NAME"
   },
   "orderData": {
@@ -34,6 +89,56 @@ Content-Type: application/json
         },
         "carrier": {
           "alias": "shipping"
+        }
+      }
+    ]
+  }
+}
+
+###
+POST http://localhost:8080/order
+Content-Type: application/json
+
+{
+  "destination": {
+    "name": "wsu-test-team-8"
+  },
+  "orderData": {
+    "status": "pending",
+    "sourceOrderId": "20220217170236",
+    "customerName": "wsu-test-team-8",
+    "items": [ ],
+    "shipments": [
+      {
+        "items": [
+          {
+            "sku":  "615dc81f41a19d71f909b0d5",
+            "sourceItemId":  "Orthotic-Left-ORDER_ID",
+            "components":  [
+              {
+                "fetch":  false,
+                "code":  "3D Printed Orthotic",
+                "path":  "LEFT_MODEL_URL"
+              }
+            ]
+          }
+        ],
+        "shipTo": {
+          "name": "Customer Name",
+          "companyName": "Company Name",
+          "address1": "Address Line 1",
+          "address2": "Address Line ",
+          "address3": "Address Line ",
+          "town": "Town",
+          "postcode": "Postcode",
+          "state": "State",
+          "isoCountry": "GB",
+          "phone": "Phone",
+          "email": "email@example.com"
+        },
+        "carrier": {
+          "code": "customer",
+          "service": "shipping"
         }
       }
     ]
