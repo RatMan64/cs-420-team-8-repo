@@ -75,7 +75,7 @@ public class Endpoint {
         //debugging
 //        System.out.println(SF.ValidateOrder(o.toString(1)));
 
-        System.out.println("called with: " + o.toString());
+        System.out.println("called with: " + o.toString(1));
         var response = SF.SubmitOrder(o.toString()).getStatusLine();
         System.out.println(response.toString());
 
@@ -91,13 +91,11 @@ public class Endpoint {
         return ResponseEntity.status(response.getStatusCode()).build();
     }
 
-    @PostMapping("/t")
-    public void test(@RequestBody Order o){
-        var item = new DBItem();
+    @GetMapping("/t")
+    public String test(){
+        System.out.println("called /t");
 
-
-        DB.putItem(item);
-
+        return "works";
     }
     /**
      * this is what needs to happen in this upadate api call
