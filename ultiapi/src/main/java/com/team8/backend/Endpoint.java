@@ -66,9 +66,10 @@ public class Endpoint {
     public ResponseEntity<Integer> submitOrder(@RequestBody Order order) throws NoSuchAlgorithmException, IOException, InvalidKeyException {
         var o = new JSONObject(order);
 
+        var id = UUID.randomUUID().toString();
         // set necessary values (postback, destination, etc)
         o.getJSONObject("destination").put("name", "wsu-test-team-8");
-        o.getJSONObject("orderData").put("sourceOrderId", UUID.randomUUID().toString());
+        o.getJSONObject("orderData").put("sourceOrderId", id);
         o.getJSONObject("orderData").put("status", "pending");
 
 
@@ -79,11 +80,12 @@ public class Endpoint {
         var response = SF.SubmitOrder(o.toString()).getStatusLine();
         System.out.println(response.toString());
 
-        if (response.getStatusCode() != 200){
+        if (response.getStatusCode() != 201){
             System.out.println(response);
         } else { // only submit on ok status?
             var item = new DBItem();
             item.setOrder(order);
+            item.setId(id);
             DB.putItem(item);
         }
 
