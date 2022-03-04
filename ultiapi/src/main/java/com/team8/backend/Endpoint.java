@@ -93,11 +93,4 @@ public class Endpoint {
         return ResponseEntity.status(response.getStatusCode()).build();
     }
 
-    @GetMapping("/t")
-    public String test(){
-        System.out.println("called /t");
-
-        return "works";
-    }
-
 }
