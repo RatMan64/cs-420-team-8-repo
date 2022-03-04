@@ -1,8 +1,10 @@
 package com.team8.backend;
 
 import org.json.JSONObject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -14,23 +16,26 @@ public class SFCallbacks {
 
     private static final DynamoDbTable<DBItem> DB = DataBase.setup();
 
-    /**
-     * this is what needs to happen in this upadate api call
-     * 1. Either the partition key for the order needs to ge fished out of the json that siteflow gives
-     * or you use the order id that siteflow gives (this will need to be ironed out on how orderID is created for siteflow
-     * 2. update the item that corisponds to that id or uuid (specifically the status of the order)
-     **/
-    @PostMapping("/update")
-    public void update(@RequestBody JSONObject order_to_update)throws NoSuchAlgorithmException, IOException, InvalidKeyException {
-        //todo grab order id from site flow response json  and update that orders status
 
+    @PostMapping("/generalStatus")
+    public ResponseEntity<Integer> generalStatus(@RequestBody JSONObject order)throws NoSuchAlgorithmException, IOException, InvalidKeyException {
+      String Customer = order.getString("customer");
+      String ID = order.getString("orderid");
+      String status = order.getString("orderstatus");
 
-
+      var ordertoupdate = DB.getItem(Key.builder().partitionValue(Customer).sortValue(ID).build());
+      ordertoupdate.getOrder().getOrderData().setStatus(status);
+      DB.putItem(ordertoupdate);
+      return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/t")
-    public String test(){
-        System.out.println("called");
-        return "works";
-    }
+
+  @PostMapping("/ShipmentShipped")
+  public void ShipShipped(@RequestBody JSONObject shipped_order)throws NoSuchAlgorithmException, IOException, InvalidKeyException {
+
+
+
+  }
+
+
 }
