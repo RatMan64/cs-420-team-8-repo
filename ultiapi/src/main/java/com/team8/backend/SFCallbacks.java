@@ -19,7 +19,9 @@ public class SFCallbacks {
 
     @PostMapping("/generalStatus")
     public ResponseEntity<Integer> generalStatus(@RequestBody JSONObject order)throws NoSuchAlgorithmException, IOException, InvalidKeyException {
-      String Customer = order.getString("customer");
+      //String Customer = order.getString("customer");
+	//todo: revmove when implementned on the frontend
+      String Customer = "TESTING";
       String ID = order.getString("orderid");
       String status = order.getString("orderstatus");
 
