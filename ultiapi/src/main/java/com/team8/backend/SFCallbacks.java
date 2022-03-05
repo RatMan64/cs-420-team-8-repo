@@ -24,9 +24,13 @@ public class SFCallbacks {
     public ResponseEntity<Integer> generalStatus(@RequestBody JSONObject order)throws NoSuchAlgorithmException, IOException, InvalidKeyException {
 //      String Customer = order.getString("customer");
         //todo remove when properly imeplemnted
+
         String Customer = "TESTING";
       String ID = order.getString("orderid");
       String status = order.getString("orderstatus");
+
+
+      System.out.println("updating order for: " + Customer + " id: " + ID + " status: " + status);
 
       var ordertoupdate = DB.getItem(Key.builder().partitionValue(Customer).sortValue(ID).build());
       ordertoupdate.getOrder().getOrderData().setStatus(status);
