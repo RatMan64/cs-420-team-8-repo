@@ -76,7 +76,7 @@ public class Endpoint {
         //debugging
 //        System.out.println(SF.ValidateOrder(o.toString(1)));
 
-        System.out.println("called with: " + o.toString(1));
+//        System.out.println("called with: " + o.toString(1));
         var response = SF.SubmitOrder(o.toString()).getStatusLine();
         System.out.println(response.toString());
 
@@ -84,6 +84,7 @@ public class Endpoint {
             System.out.println(response);
         } else { // only submit on ok status?
             var item = new DBItem();
+            item.setUser("TESTING");
             item.setOrder(order);
             item.setId(id);
             DB.putItem(item);
