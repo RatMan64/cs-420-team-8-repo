@@ -28,6 +28,9 @@ public class SFCallbacks {
       String ID = order.getString("orderid");
       String status = order.getString("orderstatus");
 
+
+      System.out.println("updating order for: " + Customer + " id: " + ID + " status: " + status);
+
       var ordertoupdate = DB.getItem(Key.builder().partitionValue(Customer).sortValue(ID).build());
       ordertoupdate.getOrder().getOrderData().setStatus(status);
       DB.putItem(ordertoupdate);

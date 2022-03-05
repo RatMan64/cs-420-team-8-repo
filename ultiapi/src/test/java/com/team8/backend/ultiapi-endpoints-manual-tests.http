@@ -144,3 +144,61 @@ Content-Type: application/json
     ]
   }
 }
+
+
+###
+POST http://localhost:8080/order
+Content-Type: application/json
+
+{
+  "orderData": {
+    "status": "pending",
+    "sourceOrderId": "ec96a281-7db4-4be3-b82c-d3fce2d369c4",
+    "shipments": [
+      {
+        "carrier": {
+          "code": "customer",
+          "service": "shipping"
+        },
+        "items": [
+          {
+            "components": [
+              {
+                "path": "LEFT_MODEL_URL",
+                "fetch":  false,
+                "code": "3D Printed Orthotic"
+              }
+            ],
+            "sourceItemId": "Orthotic-Left-ORDER_ID",
+            "sku": "615dc81f41a19d71f909b0d5"
+          }
+        ],
+        "shipTo": {
+          "town": "Town",
+          "address1": "Address Line 1",
+          "companyName": "Company Name",
+          "name": "Customer Name",
+          "postcode": "Postcode",
+          "isoCountry": "GB"
+        }
+      }
+    ],
+    "items": [
+      {
+        "sourceItemId": "ec96a281-7db4-4be3-b82c-d3fce2d369c4-0-0",
+        "productId": "615dc81f41a19d71f909b0d5",
+        "sku": "HP-Orthotic-Right",
+        "components": [
+          {
+            "code": "Orthotic-Component",
+            "fetch":  false,
+            "path": "LEFT_MODEL_URL"
+          }
+        ]
+      }
+    ]
+  },
+  "destination": {
+    "name": "wsu-test-team-8"
+  }
+}
