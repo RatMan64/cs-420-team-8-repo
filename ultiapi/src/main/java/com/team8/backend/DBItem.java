@@ -5,22 +5,20 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
-import java.util.UUID;
-
 @DynamoDbBean
 public class DBItem {
-    private String Customer;
-    private final String id = UUID.randomUUID().toString();
+    private String user;
+    private String id;
     private Order order;
 
     // cant use default constructor with dynamo sdk
 
     @DynamoDbPartitionKey
-    public String getCustomer() {
-        return Customer;
+    public String getUser() {
+        return user;
     }
-    public void setCustomer(String customer) {
-        this.Customer = customer;
+    public void setUser(String user) {
+        this.user = user;
     }
 
 
@@ -28,7 +26,7 @@ public class DBItem {
     // Kevin, setid is needed so dynamo sdk parses the order class into a schema correctly
     @DynamoDbSortKey
     public String getId() { return id; }
-    public void setId(String id) {}
+    public void setId(String id) {this.id = id;}
 
 
     public Order getOrder() {
