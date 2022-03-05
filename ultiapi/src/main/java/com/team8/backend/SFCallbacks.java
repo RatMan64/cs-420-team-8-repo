@@ -22,10 +22,7 @@ public class SFCallbacks {
 
     @PostMapping("/generalStatus")
     public ResponseEntity<Integer> generalStatus(@RequestBody JSONObject order)throws NoSuchAlgorithmException, IOException, InvalidKeyException {
-//      String Customer = order.getString("customer");
-        //todo remove when properly imeplemnted
-
-        String Customer = "TESTING";
+      String Customer = order.getString("customer");
       String ID = order.getString("orderid");
       String status = order.getString("orderstatus");
 

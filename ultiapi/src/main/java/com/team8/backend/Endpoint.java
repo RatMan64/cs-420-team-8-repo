@@ -64,6 +64,7 @@ public class Endpoint {
 
     @PostMapping("/order")
     public ResponseEntity<Integer> submitOrder(@RequestBody Order order) throws NoSuchAlgorithmException, IOException, InvalidKeyException {
+        order.getOrderData().setCustomerName("wsu-test-team-8");
         var o = new JSONObject(order);
 
         var id = UUID.randomUUID().toString();
@@ -84,7 +85,7 @@ public class Endpoint {
             System.out.println(response);
         } else { // only submit on ok status?
             var item = new DBItem();
-            item.setUser("TESTING");
+            item.setUser(order.getOrderData().getCustomerName());
             item.setOrder(order);
             item.setId(id);
             DB.putItem(item);
