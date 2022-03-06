@@ -64,51 +64,35 @@ public class Endpoint {
 
     @PostMapping("/order")
     public ResponseEntity<Integer> submitOrder(@RequestBody Order order) throws NoSuchAlgorithmException, IOException, InvalidKeyException {
+        order.getOrderData().setCustomerName("wsu-test-team-8");
         var o = new JSONObject(order);
 
+        var id = UUID.randomUUID().toString();
         // set necessary values (postback, destination, etc)
         o.getJSONObject("destination").put("name", "wsu-test-team-8");
-        o.getJSONObject("orderData").put("sourceOrderId", UUID.randomUUID().toString());
+        o.getJSONObject("orderData").put("sourceOrderId", id);
         o.getJSONObject("orderData").put("status", "pending");
 
 
         //debugging
 //        System.out.println(SF.ValidateOrder(o.toString(1)));
 
-        System.out.println("called with: " + o.toString(1));
+//        System.out.println("called with: " + o.toString(1));
         var response = SF.SubmitOrder(o.toString()).getStatusLine();
         System.out.println(response.toString());
 
-        if (response.getStatusCode() != 200){
+        if (response.getStatusCode() != 201){
             System.out.println(response);
         } else { // only submit on ok status?
             var item = new DBItem();
+            item.setUser(order.getOrderData().getCustomerName());
             item.setOrder(order);
+            item.setId(id);
             DB.putItem(item);
         }
 
         // pass status from siteflow to front end
         return ResponseEntity.status(response.getStatusCode()).build();
-    }
-
-    @GetMapping("/t")
-    public String test(){
-        System.out.println("called /t");
-
-        return "works";
-    }
-    /**
-     * this is what needs to happen in this upadate api call
-     * 1. Either the partition key for the order needs to ge fished out of the json that siteflow gives
-     * or you use the order id that siteflow gives (this will need to be ironed out on how orderID is created for siteflow
-     * 2. update the item that corisponds to that id or uuid (specifically the status of the order)
-     **/
-    @PostMapping("/update")
-    public void update(@RequestBody JSONObject order_to_update)throws  NoSuchAlgorithmException, IOException, InvalidKeyException{
-        //todo grab order id from site flow response json  and update that orders status
-
-
-
     }
 
 }
