@@ -3,10 +3,12 @@ package com.team8.backend;
 import com.team8.backend.schema.Order;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.model.Page;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -53,12 +55,16 @@ public class Endpoint {
     }
 
     @GetMapping("/orders")
-    public Map<String, Object> getOrders() throws KeyException, NoSuchAlgorithmException, IOException {
-        var response = SF.GetAllOrders();
-        System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
-        HttpEntity entity = response.getEntity();
-        String body = EntityUtils.toString(entity, "UTF-8");
-        return new JSONObject(body).toMap();
+    public JSONArray getOrders() throws KeyException, NoSuchAlgorithmException, IOException {
+
+        var result = DB.scan();
+
+        return new JSONArray(result.items());
+//        var response = SF.GetAllOrders();
+//        System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
+//        HttpEntity entity = response.getEntity();
+//        String body = EntityUtils.toString(entity, "UTF-8");
+//        return new JSONObject(body).toMap();
     }
 
 
