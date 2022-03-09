@@ -55,11 +55,13 @@ public class Endpoint {
     }
 
     @GetMapping("/orders")
-    public JSONArray getOrders() throws KeyException, NoSuchAlgorithmException, IOException {
+    public Map<String, Object> getOrders() throws KeyException, NoSuchAlgorithmException, IOException {
 
         var result = DB.scan();
 
-        return new JSONArray(result.items());
+        JSONObject jo = new JSONObject();
+        jo.put("data", new JSONArray(result.items()));
+        return jo.toMap();
 //        var response = SF.GetAllOrders();
 //        System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
 //        HttpEntity entity = response.getEntity();
