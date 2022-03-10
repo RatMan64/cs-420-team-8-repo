@@ -3,6 +3,7 @@ package com.team8.backend;
 import com.team8.backend.schema.Order;
 import org.apache.http.HttpEntity;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,12 +54,13 @@ public class Endpoint {
     }
 
     @GetMapping("/orders")
-    public Map<String, Object> getOrders() throws KeyException, NoSuchAlgorithmException, IOException {
-        var response = SF.GetAllOrders();
-        System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
-        HttpEntity entity = response.getEntity();
-        String body = EntityUtils.toString(entity, "UTF-8");
-        return new JSONObject(body).toMap();
+    public Map<String, Object> getOrders(){
+
+        var result = DB.scan().items();
+
+        JSONObject jo = new JSONObject();
+        jo.put("data", new JSONArray(result));
+        return jo.toMap();
     }
 
 
