@@ -66,21 +66,20 @@ public class Endpoint {
 
     @PostMapping("/order")
     public ResponseEntity<Integer> submitOrder(@RequestBody Order order) throws NoSuchAlgorithmException, IOException, InvalidKeyException {
-        order.getOrderData().setCustomerName("wsu-test-team-8");
-        var o = new JSONObject(order);
 
         var id = UUID.randomUUID().toString();
         // set necessary values (postback, destination, etc)
-        o.getJSONObject("destination").put("name", "wsu-test-team-8");
-        o.getJSONObject("orderData").put("sourceOrderId", id);
-        o.getJSONObject("orderData").put("status", "pending");
+        order.getDestination().setName("wsu-test-team-8");
+        order.getOrderData().setSourceOrderId(id);
+        order.getOrderData().setStatus("pending");
+        order.getOrderData().setCustomerName("wsu-test-team-8");
 
 
         //debugging
 //        System.out.println(SF.ValidateOrder(o.toString(1)));
 
 //        System.out.println("called with: " + o.toString(1));
-        var response = SF.SubmitOrder(o.toString()).getStatusLine();
+        var response = SF.SubmitOrder((new JSONObject(order)).toString()).getStatusLine();
         System.out.println(response.toString());
 
         if (response.getStatusCode() != 201){
