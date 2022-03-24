@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.model.Page;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -55,16 +54,13 @@ public class Endpoint {
     }
 
     @GetMapping("/orders")
-    public JSONArray getOrders() throws KeyException, NoSuchAlgorithmException, IOException {
+    public Map<String, Object> getOrders(){
 
-        var result = DB.scan();
+        var result = DB.scan().items();
 
-        return new JSONArray(result.items());
-//        var response = SF.GetAllOrders();
-//        System.out.println(response.getStatusLine().getStatusCode() + " : " + response.getStatusLine().getReasonPhrase());
-//        HttpEntity entity = response.getEntity();
-//        String body = EntityUtils.toString(entity, "UTF-8");
-//        return new JSONObject(body).toMap();
+        JSONObject jo = new JSONObject();
+        jo.put("data", new JSONArray(result));
+        return jo.toMap();
     }
 
 

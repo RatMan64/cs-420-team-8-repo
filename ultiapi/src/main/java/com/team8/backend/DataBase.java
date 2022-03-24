@@ -1,6 +1,5 @@
 package com.team8.backend;
 
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.InstanceProfileCredentialsProvider;
@@ -14,12 +13,13 @@ public class DataBase {
     public static DynamoDbTable<DBItem> setup(){
 
         AwsCredentialsProvider prov;
-        if(System.getProperty("os.name").equals("Linux")){
+        if (System.getProperty("os.name").equals("Linux")){
+            System.out.println("running on linux using EC2 credentials");
             prov = InstanceProfileCredentialsProvider.create();
         } else {
+            System.out.println("running on windows using env credentials");
             prov = EnvironmentVariableCredentialsProvider.create();
         }
-
         var ddb = DynamoDbClient.builder()
                 .credentialsProvider(prov)
                 .region(Region.US_WEST_2)
