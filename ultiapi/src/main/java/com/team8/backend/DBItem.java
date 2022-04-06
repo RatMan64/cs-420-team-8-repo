@@ -10,6 +10,8 @@ public class DBItem {
     private String user;
     private String id;
     private Order order;
+    private String trackingurl;
+    private String trackingnum;
 
     // cant use default constructor with dynamo sdk
 
@@ -35,4 +37,9 @@ public class DBItem {
     public void setOrder(Order order) {
         this.order = order;
     }
+    public void setTrackingurl(String url){this.trackingurl = url; }
+    public String getTrackingurl(){return trackingurl;}
+    public void setTrackingnum(String num){this.trackingnum = num;}
+    public String getTrackingnum(){return trackingnum;}
+
 }
