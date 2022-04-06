@@ -10,30 +10,25 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 public class DataBase {
-    public static DynamoDbTable<DBItem> setup(){
 
-        AwsCredentialsProvider prov;
-        if (System.getProperty("os.name").equals("Linux")){
-            System.out.println("running on linux using EC2 credentials");
-            prov = InstanceProfileCredentialsProvider.create();
-        } else {
-            System.out.println("running on windows using env credentials");
-            prov = EnvironmentVariableCredentialsProvider.create();
-        }
+    public static AwsCredentialsProvider prov = System.getProperty("os.name").equals("Linux") ?
+            InstanceProfileCredentialsProvider.create() :
+            EnvironmentVariableCredentialsProvider.create();
+
+    private final DynamoDbTable<DBItem> client = setup_client();
+    public DynamoDbTable<DBItem> get_client(){
+        return client;
+    }
+
+    private DynamoDbTable<DBItem> setup_client(){
         var ddb = DynamoDbClient.builder()
                 .credentialsProvider(prov)
                 .region(Region.US_WEST_2)
                 .build();
-        var eddb = DynamoDbEnhancedClient
-                .builder()
+        var eddb = DynamoDbEnhancedClient .builder()
                 .dynamoDbClient(ddb)
                 .build();
-
-        if(eddb == null)
-            throw new RuntimeException("aws dynamo db connection was not created");
-
         return eddb.table("hp-siteflow-orders", TableSchema.fromBean(DBItem.class));
-
     }
 
 

@@ -19,7 +19,7 @@ import java.util.UUID;
 @RestController
 public class Endpoint {
 
-    private static final DynamoDbTable<DBItem> DB = DataBase.setup();
+    private static final DynamoDbTable<DBItem> DB = (new DataBase()).get_client();
     private static final SiteFlow SF = new SiteFlow();
 
 

@@ -10,7 +10,6 @@ import javax.annotation.Generated;
 public class Carrier {
     private String code;
     private String service;
-
     private String alias;
 
     public String getAlias() {
