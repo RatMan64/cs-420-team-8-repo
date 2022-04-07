@@ -1,0 +1,9 @@
+###
+POST http://localhost:8080/callback/generalStatus
+Content-Type: application/json
+
+{
+ "customer": "wsu-test-team-8",
+ "orderid" : "005ea2f4-def2-4d7f-8ccc-421c3e913b6c",
+ "orderstatus": "kz was here"
+}
