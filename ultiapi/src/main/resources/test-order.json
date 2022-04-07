@@ -1,0 +1,37 @@
+{
+  "destination": {"name": "wsu-test-team-8"},
+  "orderData": {
+    "items": [{
+      "components": [{
+        "code": "Orthotic-Component",
+        "fetch": false
+      }],
+      "productId": "615dc81f41a19d71f909b0d5",
+      "sourceItemId": "HP-Orthotic-Left",
+      "sku": "HP-Orthotic-Right"
+    }],
+    "shipments": [{
+      "carrier": {
+        "code": "customer",
+        "service": "shipping"
+      },
+      "items": [{
+        "components": [{
+          "code": "3D Printed Orthotic",
+          "fetch": false
+        }],
+        "sourceItemId": "HP-Orthotic-Left",
+        "sku": "615dc81f41a19d71f909b0d5"
+      }],
+      "shipTo": {
+        "town": "made up city",
+        "address1": "1234NWES rd",
+        "companyName": "team 8",
+        "name": "Kevin",
+        "postcode": "77777",
+        "isoCountry": "US"
+      }
+    }],
+    "customerName": "wsu-test-team-8"
+  }
+}
