@@ -13,14 +13,16 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 @RequestMapping("callback")
 public class SFCallbacks {
 
-    private static final DynamoDbTable<DBItem> DB = DataBase.setup();
+    private static final DynamoDbTable<DBItem> DB = (new DataBase()).get_client();
 
 
     @PostMapping("/generalStatus")
     public ResponseEntity<Integer> generalStatus(@RequestBody JSONObject order){
         String Customer = order.getString("customer");
         String ID = order.getString("orderid");
-        String status = order.getString("orderstatus");
+        String status = order.getString("orderstatus");;
+
+
         System.out.println("updating order for: " + Customer + " id: " + ID + " status: " + status);
 
         var ordertoupdate = DB.getItem(Key.builder().partitionValue(Customer).sortValue(ID).build());
@@ -28,6 +30,7 @@ public class SFCallbacks {
         DB.putItem(ordertoupdate);
         return ResponseEntity.ok().build();
     }
+
 
     @PostMapping("/ShipmentShipped")
     public ResponseEntity<Integer> ShipShipped(@RequestBody JSONObject order){
