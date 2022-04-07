@@ -47,6 +47,7 @@ public class SFCallbacks {
       var ordershippupdate = DB.getItem(Key.builder().partitionValue(Customer).sortValue(ID).build());
       ordershippupdate.setTrackingnum(trackNum);
       ordershippupdate.setTrackingurl(tracUrl);
+      ordershippupdate.getOrder().getOrderData().setStatus(status);
       DB.putItem(ordershippupdate);
       return ResponseEntity.ok().build();
   }
