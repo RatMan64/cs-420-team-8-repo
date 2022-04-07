@@ -17,39 +17,33 @@ public class SFCallbacks {
 
 
     @PostMapping("/generalStatus")
-    public ResponseEntity<Integer> generalStatus(@RequestBody String o){
+    public ResponseEntity<Integer> generalStatus(@RequestBody JSONObject order){
+        String Customer = order.getString("customer");
+        String ID = order.getString("orderid");
+        String status = order.getString("orderstatus");
+        System.out.println("updating order for: " + Customer + " id: " + ID + " status: " + status);
 
-        System.out.println("o");
-        var order = new JSONObject(o);
-      String Customer = order.getString("customer");
-      String ID = order.getString("orderid");
-      String status = order.getString("orderstatus");
-
-
-      System.out.println("updating order for: " + Customer + " id: " + ID + " status: " + status);
-
-      var ordertoupdate = DB.getItem(Key.builder().partitionValue(Customer).sortValue(ID).build());
-      ordertoupdate.getOrder().getOrderData().setStatus(status);
-      DB.putItem(ordertoupdate);
-      return ResponseEntity.ok().build();
+        var ordertoupdate = DB.getItem(Key.builder().partitionValue(Customer).sortValue(ID).build());
+        ordertoupdate.getOrder().getOrderData().setStatus(status);
+        DB.putItem(ordertoupdate);
+        return ResponseEntity.ok().build();
     }
 
 
-  @PostMapping("/ShipmentShipped")
-  public ResponseEntity<Integer> ShipShipped(@RequestBody String o){
-      var order = new JSONObject(o);
-      String Customer = order.getString("customer");
-      String ID = order.getString("orderId");
-      String status = order.getString("status");
-      String tracUrl = order.getString("trackingNUM");
-      String trackNum = order.getString("trackingURL");
-      System.out.println("updating order for: " + Customer + " id: " + ID + " to status: " + status + " traking url: "+ tracUrl + " tracking Number: " + trackNum);
-      var ordershippupdate = DB.getItem(Key.builder().partitionValue(Customer).sortValue(ID).build());
-      ordershippupdate.setTrackingnum(trackNum);
-      ordershippupdate.setTrackingurl(tracUrl);
-      DB.putItem(ordershippupdate);
-      return ResponseEntity.ok().build();
-  }
+    @PostMapping("/ShipmentShipped")
+    public ResponseEntity<Integer> ShipShipped(@RequestBody JSONObject order){
+        String Customer = order.getString("customer");
+        String ID = order.getString("orderId");
+        String status = order.getString("status");
+        String tracUrl = order.getString("trackingNUM");
+        String trackNum = order.getString("trackingURL");
+        System.out.println("updating order for: " + Customer + " id: " + ID + " to status: " + status + " traking url: "+ tracUrl + " tracking Number: " + trackNum);
+        var ordershippupdate = DB.getItem(Key.builder().partitionValue(Customer).sortValue(ID).build());
+        ordershippupdate.setTrackingnum(trackNum);
+        ordershippupdate.setTrackingurl(tracUrl);
+        DB.putItem(ordershippupdate);
+        return ResponseEntity.ok().build();
+    }
 
 
 }
