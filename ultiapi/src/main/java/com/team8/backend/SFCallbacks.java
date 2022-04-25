@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
 @RestController
 @RequestMapping("callback")
 public class SFCallbacks {
 
     private static final DynamoDbTable<DBItem> DB = (new DataBase()).get_client();
+
 
 
     @PostMapping("/generalStatus")

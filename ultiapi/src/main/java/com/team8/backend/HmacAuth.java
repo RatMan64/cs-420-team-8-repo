@@ -45,7 +45,7 @@ public class HmacAuth {
 	    SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(), algorithm);
 	    mac.init(secret_key);
         // (Kevin) the difference between the different hashes is an extra space
-//todo diffrence between example extra space>>>v<<<
+//note diffrence between example extra space>>>v<<<
 	    String toHash = method + " " + path + " " + timestamp;
 	    byte[] rawHmac = mac.doFinal(toHash.getBytes());
 
